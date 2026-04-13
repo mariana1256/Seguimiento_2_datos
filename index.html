@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mental Health & Productivity Analysis</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #10b981;
+            --accent: #f59e0b;
+            --bg-dark: #0f172a;
+            --bg-card: #1e293b;
+            --bg-card-light: #334155;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --gradient-start: #1e1b4b;
+            --gradient-end: #0f172a;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 50%, #1a103c 100%);
+            min-height: 100vh;
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(99, 102, 241, 0.2);
+            z-index: 1000;
+            padding: 1rem 2rem;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-logo span {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        header {
+            padding: 8rem 2rem 4rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(16, 185, 129, 0.1) 0%, transparent 40%);
+            animation: float 20s ease-in-out infinite;
+            z-index: 0;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(-2%, 2%) rotate(1deg); }
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .header-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(99, 102, 241, 0.15);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .header-badge::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: var(--secondary);
+            border-radius: 50%;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #f8fafc 0%, #cbd5e1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+
+        .author-info {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 0.75rem 1.25rem;
+            border-radius: 12px;
+        }
+
+        .author-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .author-details {
+            text-align: left;
+        }
+
+        .author-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .author-role {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem 4rem;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-title h2 {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .section-title p {
+            color: var(--text-secondary);
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 4rem;
+        }
+
+        .step-card {
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .step-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+        }
+
+        .step-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(99, 102, 241, 0.3);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .step-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .step-number {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.25rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .step-card h3 {
+            font-size: 1.35rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .step-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .step-details {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            padding: 1.25rem;
+        }
+
+        .step-details h4 {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.75rem;
+        }
+
+        .variable-list, .detail-list {
+            list-style: none;
+        }
+
+        .variable-list li, .detail-list li {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.4rem 0;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .variable-list li::before, .detail-list li::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: var(--secondary);
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .stat-item {
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 10px;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .findings-card {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(16, 185, 129, 0.1));
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 20px;
+            padding: 2rem;
+        }
+
+        .finding-item {
+            display: flex;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .finding-item:last-child {
+            border-bottom: none;
+        }
+
+        .finding-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(245, 158, 11, 0.2);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .finding-content h4 {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .finding-content p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .app-card {
+            background: linear-gradient(135deg, var(--bg-card), var(--bg-card-light));
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .app-icon {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 1.75rem;
+        }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 0.875rem 1.75rem;
+            border-radius: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            margin-top: 1.5rem;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
+        }
+
+        footer {
+            background: rgba(0, 0, 0, 0.3);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            text-align: center;
+        }
+
+        footer p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.25rem;
+            }
+
+            .header-subtitle {
+                font-size: 1rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .steps-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <div class="nav-logo">
+                <span>MH&P</span> Analysis
+            </div>
+            <ul class="nav-links">
+                <li><a href="#dataset">Dataset</a></li>
+                <li><a href="#etl">ETL</a></li>
+                <li><a href="#eda">EDA</a></li>
+                <li><a href="#findings">Findings</a></li>
+                <li><a href="#application">Application</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <header>
+        <div class="header-content">
+            <div class="header-badge">
+                Jupyter Notebook Analysis
+            </div>
+            <h1>Mental Health & Productivity Analysis</h1>
+            <p class="header-subtitle">
+                Exploratory data analysis of employee mental health and productivity metrics from the Mental Health & Productivity 2026 dataset.
+            </p>
+            <div class="author-info">
+                <div class="author-avatar">MG</div>
+                <div class="author-details">
+                    <div class="author-name">Mariana Gutierrez Restrepo</div>
+                    <div class="author-role">Data Engineering Student</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section id="dataset" class="section-title">
+            <h2>Analysis Pipeline</h2>
+            <p>Five key phases of the data analysis project</p>
+        </section>
+
+        <div class="steps-grid">
+            <div class="step-card" id="dataset">
+                <div class="step-number">1</div>
+                <h3>Dataset Selection</h3>
+                <p>Selected the Mental Health & Productivity 2026 dataset from Kaggle containing employee workplace and wellbeing metrics.</p>
+                <div class="step-details">
+                    <h4>Dataset Variables</h4>
+                    <ul class="variable-list">
+                        <li>Employee_ID</li>
+                        <li>Age</li>
+                        <li>Gender</li>
+                        <li>Country</li>
+                        <li>Industry</li>
+                        <li>Work_Mode</li>
+                        <li>Work_Hours_Per_Week</li>
+                        <li>Stress_Level</li>
+                        <li>Sleep_Hours</li>
+                        <li>Productivity_Score</li>
+                        <li>Physical_Activity_Hours</li>
+                        <li>Mental_Health_Support_Access</li>
+                        <li>Burnout_Risk</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="step-card" id="etl">
+                <div class="step-number">2</div>
+                <h3>ETL Process</h3>
+                <p>Extraction, transformation, and loading pipeline to prepare the data for analysis.</p>
+                <div class="step-details">
+                    <h4>Extraction</h4>
+                    <ul class="detail-list">
+                        <li>Downloaded from Kaggle using kagglehub</li>
+                    </ul>
+                    <h4 style="margin-top: 1rem;">Transformation</h4>
+                    <ul class="detail-list">
+                        <li>Checked null values</li>
+                        <li>Converted data types</li>
+                        <li>Created productivity_level (Baja/Media/Alta)</li>
+                    </ul>
+                    <h4 style="margin-top: 1rem;">Loading</h4>
+                    <ul class="detail-list">
+                        <li>Saved as cleaned_dataset.csv</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="step-card" id="eda">
+                <div class="step-number">3</div>
+                <h3>EDA</h3>
+                <p>Exploratory data analysis with statistical summaries and visualizations.</p>
+                <div class="step-details">
+                    <h4>Dataset Overview</h4>
+                    <ul class="detail-list">
+                        <li>1500 rows, 13 columns</li>
+                    </ul>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-value">41</div>
+                            <div class="stat-label">Mean Age</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">47</div>
+                            <div class="stat-label">Mean Work Hours/Week</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">70</div>
+                            <div class="stat-label">Mean Productivity</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">6.2</div>
+                            <div class="stat-label">Mean Stress Level</div>
+                        </div>
+                    </div>
+                    <h4 style="margin-top: 1rem;">Visualizations</h4>
+                    <ul class="detail-list">
+                        <li>Histograms</li>
+                        <li>Scatter plots</li>
+                        <li>Boxplots</li>
+                        <li>Correlation matrix</li>
+                        <li>Pairplots</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="step-card" id="findings">
+                <div class="step-number">4</div>
+                <h3>Key Findings</h3>
+                <p>Insights discovered through comprehensive data analysis.</p>
+                <div class="findings-card">
+                    <div class="finding-item">
+                        <div class="finding-icon">⚠</div>
+                        <div class="finding-content">
+                            <h4>Stress-Productivity Correlation</h4>
+                            <p>Higher stress levels are associated with lower productivity</p>
+                        </div>
+                    </div>
+                    <div class="finding-item">
+                        <div class="finding-icon">✓</div>
+                        <div class="finding-content">
+                            <h4>Sleep Impact</h4>
+                            <p>More sleep hours correlate with better work performance</p>
+                        </div>
+                    </div>
+                    <div class="finding-item">
+                        <div class="finding-icon">◐</div>
+                        <div class="finding-content">
+                            <h4>Productivity Variability</h4>
+                            <p>Significant variability in productivity among workers</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-card" id="application" style="grid-column: span 2;">
+                <div class="step-number">5</div>
+                <h3>No-Code Application</h3>
+                <p>Leveraging the analysis for practical business applications.</p>
+                <div class="app-card">
+                    <div class="app-icon">📊</div>
+                    <h3>AppSheet Implementation</h3>
+                    <p style="color: var(--text-secondary); margin-top: 1rem; max-width: 500px; margin-left: auto; margin-right: auto;">
+                        The dataset and analysis can be used to build a no-code application with AppSheet to monitor employee wellbeing and productivity in real-time.
+                    </p>
+                    <a href="#" class="cta-button">
+                        Learn More
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>Mental Health & Productivity Analysis | Mariana Gutierrez Restrepo | 2026</p>
+    </footer>
+</body>
+</html>
